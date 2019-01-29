@@ -1,5 +1,6 @@
 package com.desafio.digital.votacao.controller;
 
+import com.desafio.digital.votacao.ApiVersion;
 import com.desafio.digital.votacao.domain.Pauta;
 import com.desafio.digital.votacao.service.PautaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,13 @@ public class PautaController {
         this.pautaService = pautaService;
     }
 
-    @PostMapping
+    @PostMapping(produces = ApiVersion.V1)
+    public ResponseEntity<Pauta> criarPautaV2(@Valid @RequestBody Pauta pauta) {
+        Pauta pautaCriada = pautaService.criarPauta(pauta);
+        return new ResponseEntity<>(pautaCriada, HttpStatus.OK);
+    }
+
+    @PostMapping(produces = ApiVersion.V2)
     public ResponseEntity<Pauta> criarPauta(@Valid @RequestBody Pauta pauta) {
         Pauta pautaCriada = pautaService.criarPauta(pauta);
         return new ResponseEntity<>(pautaCriada, HttpStatus.CREATED);

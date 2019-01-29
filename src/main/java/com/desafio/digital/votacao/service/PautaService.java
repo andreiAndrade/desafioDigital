@@ -14,6 +14,7 @@ public class PautaService {
         this.pautaRepository = pautaRepository;
     }
 
+
     public Pauta criarPauta(Pauta pauta) {
         return pautaRepository.save(pauta);
     }
