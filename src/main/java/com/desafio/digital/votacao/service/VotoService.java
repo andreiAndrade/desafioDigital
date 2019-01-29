@@ -3,6 +3,7 @@ package com.desafio.digital.votacao.service;
 import com.desafio.digital.votacao.domain.Voto;
 import com.desafio.digital.votacao.domain.client.StatusEnum;
 import com.desafio.digital.votacao.domain.client.Users;
+import com.desafio.digital.votacao.domain.enums.VotoEnum;
 import com.desafio.digital.votacao.exception.BussinessException;
 import com.desafio.digital.votacao.repository.VotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,14 @@ public class VotoService {
 
     public List<Voto> findByIdPauta(Long idPauta) {
         return votoRepository.findByIdPauta(idPauta);
+    }
+
+    public Long countVotosFavor(List<Voto> votoList) {
+        return votoList.stream().filter(voto -> VotoEnum.SIM.equals(voto.getVoto())).count();
+    }
+
+    public Long countVotosContra(List<Voto> votoList) {
+        return votoList.stream().filter(voto -> VotoEnum.NAO.equals(voto.getVoto())).count();
     }
 
     private void checkVotoPermitido(Voto voto) {

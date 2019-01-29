@@ -1,5 +1,8 @@
 package com.desafio.digital.votacao.domain;
 
+import com.desafio.digital.votacao.domain.enums.VotoEnum;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,11 +14,17 @@ public class Voto {
     @Id
     @GeneratedValue
     private Long id;
+
     @NotBlank(message = "O cpf do associado não pode ser nulo")
+    @Column(name = "cpf_associado", nullable = false)
     private String cpfAssociado;
+
     @NotNull(message = "O voto não pode ser nulo")
-    private Boolean voto;
+    @Column(name = "voto", nullable = false)
+    private VotoEnum voto;
+
     @NotNull(message = "O id da pauta não pode ser nulo")
+    @Column(name = "id_pauta", nullable = false)
     private Long idPauta;
 
     public Long getId() {
@@ -34,11 +43,11 @@ public class Voto {
         this.cpfAssociado = cpfAssociado;
     }
 
-    public Boolean getVoto() {
+    public VotoEnum getVoto() {
         return voto;
     }
 
-    public void setVoto(Boolean voto) {
+    public void setVoto(VotoEnum voto) {
         this.voto = voto;
     }
 

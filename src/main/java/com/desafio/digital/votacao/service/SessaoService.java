@@ -32,12 +32,11 @@ public class SessaoService {
     public Sessao finalizarSessao(Long idSessao) {
         Sessao sessao = findById(idSessao);
         List<Voto> votoList = votoService.findByIdPauta(sessao.getIdPauta());
+        sessao.setVotosFavor(votoService.countVotosFavor(votoList));
+        sessao.setVotosContra(votoService.countVotosContra(votoList));
         sessao.setTotalVotos(votoList.size());
-        sessao.setVotosFavor(votoList.stream().filter(Voto::getVoto).count());
-        sessao.setVotosContra(votoList.stream().filter(voto -> !voto.getVoto()).count());
-        sessaoRepository.save(sessao);
 
-        return sessao;
+        return sessaoRepository.save(sessao);
     }
 
     public void checkSessaoAberta(Long idPauta) {

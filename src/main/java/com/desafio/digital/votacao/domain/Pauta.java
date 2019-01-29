@@ -1,5 +1,6 @@
 package com.desafio.digital.votacao.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,9 +12,13 @@ public class Pauta {
     @Id
     @GeneratedValue
     private Long id;
+
     @NotBlank(message = "O título não pode ser nulo")
+    @Column(name = "titulo", nullable = false)
     private String titulo;
+
     @NotBlank(message = "A descrição não pode ser nulo")
+    @Column(name = "descricao", nullable = false)
     private String descricao;
 
     public Long getId() {

@@ -1,6 +1,7 @@
 package com.desafio.digital.votacao.domain;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,13 +12,26 @@ public class Sessao {
 
     @Id
     @GeneratedValue
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @NotNull(message = "O id da pauta não pode ser null")
+    @Column(name = "id_pauta", nullable = false)
     private Long idPauta;
+
+    @Column(name = "inicio_sessao", nullable = false)
     private LocalDateTime inicioSessao;
+
+    @Column(name = "tempo_duracao_sessao", nullable = false)
     private Integer tempoDuracaoSessao;
+
+    @Column(name = "total_votos")
     private Integer totalVotos;
+
+    @Column(name = "votos_favor")
     private Long votosFavor;
+
+    @Column(name = "votos_contra")
     private Long votosContra;
 
     public Sessao() {
