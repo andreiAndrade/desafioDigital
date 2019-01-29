@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(value = "/sessao")
@@ -32,8 +31,7 @@ public class SessaoController {
     }
 
     @PutMapping
-    public ResponseEntity<Sessao> finalizarSessao(
-            @NotNull(message = "O id da sessão não pode ser nulo") @RequestParam(name = "sessao") Long idSessao) {
+    public ResponseEntity<Sessao> finalizarSessao(@RequestParam(name = "sessao") Long idSessao) {
         Sessao sessaoFinalizada = sessaoService.finalizarSessao(idSessao);
         return new ResponseEntity<>(sessaoFinalizada, HttpStatus.OK);
     }
