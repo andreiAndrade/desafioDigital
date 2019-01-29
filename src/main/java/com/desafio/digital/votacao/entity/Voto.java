@@ -1,29 +1,28 @@
-package com.desafio.digital.votacao.domain;
+package com.desafio.digital.votacao.entity;
 
-import com.desafio.digital.votacao.domain.enums.VotoEnum;
+import com.desafio.digital.votacao.entity.enums.VotoEnum;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
+@ApiIgnore
 @Entity
 public class Voto {
+
     @Id
     @GeneratedValue
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotBlank(message = "O cpf do associado não pode ser nulo")
     @Column(name = "cpf_associado", nullable = false)
     private String cpfAssociado;
 
-    @NotNull(message = "O voto não pode ser nulo")
     @Column(name = "voto", nullable = false)
-    private VotoEnum voto;
+    private VotoEnum aceite;
 
-    @NotNull(message = "O id da pauta não pode ser nulo")
     @Column(name = "id_pauta", nullable = false)
     private Long idPauta;
 
@@ -43,12 +42,12 @@ public class Voto {
         this.cpfAssociado = cpfAssociado;
     }
 
-    public VotoEnum getVoto() {
-        return voto;
+    public VotoEnum getAceite() {
+        return aceite;
     }
 
-    public void setVoto(VotoEnum voto) {
-        this.voto = voto;
+    public void setAceite(VotoEnum aceite) {
+        this.aceite = aceite;
     }
 
     public Long getIdPauta() {
