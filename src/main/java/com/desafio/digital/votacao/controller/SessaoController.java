@@ -37,7 +37,8 @@ public class SessaoController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Sessão criada com sucesso"),
             @ApiResponse(code = 400, message = "Campos informados não atrendem as regras de negócio"),
-            @ApiResponse(code = 500, message = "Erro interno")
+            @ApiResponse(code = 500, message = "Erro interno"),
+            @ApiResponse(code = 500, message = "Pauta não encontrada")
     })
     @PostMapping(produces = ApiVersion.V1)
     public ResponseEntity<SessaoOut> criarSessao(

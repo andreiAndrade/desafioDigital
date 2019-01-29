@@ -21,21 +21,25 @@ public class SessaoService {
 
     private final SessaoRepository sessaoRepository;
     private final VotoService votoService;
+    private final PautaService pautaService;
     private final SessaoInToSessaoConverter sessaoInToSessaoConverter;
     private final SessaoToSessaoOutConverter sessaoToSessaoOutConverter;
 
     @Autowired
     public SessaoService(SessaoRepository sessaoRepository, VotoService votoService,
-            SessaoInToSessaoConverter sessaoInToSessaoConverter,
+            PautaService pautaService, SessaoInToSessaoConverter sessaoInToSessaoConverter,
             SessaoToSessaoOutConverter sessaoToSessaoOutConverter) {
         this.sessaoRepository = sessaoRepository;
         this.votoService = votoService;
+        this.pautaService = pautaService;
         this.sessaoInToSessaoConverter = sessaoInToSessaoConverter;
         this.sessaoToSessaoOutConverter = sessaoToSessaoOutConverter;
     }
 
     public SessaoOut criarSessao(SessaoIn sessaoIn) {
         Sessao sessao = sessaoInToSessaoConverter.convert(sessaoIn);
+
+        pautaService.checkExistPautaById(sessao.getIdPauta());
 
         if (Objects.isNull(sessao.getTempoDuracaoSessao())) {
             sessao.setTempoDuracaoSessao(1);
