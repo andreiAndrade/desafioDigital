@@ -1,7 +1,13 @@
 package com.desafio.digital.votacao.controller;
 
+import com.desafio.digital.votacao.ApiVersion;
 import com.desafio.digital.votacao.domain.Sessao;
 import com.desafio.digital.votacao.service.SessaoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Api(value = "Serviço para Manipulação de Sessão", description = "Operações de Sessão")
 @RestController
 @RequestMapping(value = "/sessao")
 public class SessaoController {
@@ -24,14 +31,30 @@ public class SessaoController {
         this.sessaoService = sessaoService;
     }
 
-    @PostMapping
-    public ResponseEntity<Sessao> criarSessao(@Valid @RequestBody Sessao sessao) {
+    @ApiOperation(value = "Cria uma sessão", response = Sessao.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Sessão criada com sucesso"),
+            @ApiResponse(code = 400, message = "Campos informados não atrendem as regras de negócio"),
+            @ApiResponse(code = 500, message = "Erro interno")
+    })
+    @PostMapping(produces = ApiVersion.V1)
+    public ResponseEntity<Sessao> criarSessao(
+            @ApiParam(value = "Sessão que será salva no banco de dados", required = true) @Valid @RequestBody Sessao sessao) {
         Sessao sessaoCriada = sessaoService.criarSessao(sessao);
         return new ResponseEntity<>(sessaoCriada, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Sessao> finalizarSessao(@RequestParam(name = "sessao") Long idSessao) {
+    @ApiOperation(value = "Finaliza uma sessão e contabiliza os votos", response = Sessao.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Sessão finalizada com sucesso"),
+            @ApiResponse(code = 400, message = "Campos informados não atrendem as regras de negócio"),
+            @ApiResponse(code = 500, message = "Erro interno"),
+            @ApiResponse(code = 404, message = "Sessão não encontrada")
+    })
+    @PutMapping(produces = ApiVersion.V1)
+    public ResponseEntity<Sessao> finalizarSessao(
+            @ApiParam(value = "Id da sessão que será encerrada", required = true)
+            @RequestParam(name = "sessao") Long idSessao) {
         Sessao sessaoFinalizada = sessaoService.finalizarSessao(idSessao);
         return new ResponseEntity<>(sessaoFinalizada, HttpStatus.OK);
     }

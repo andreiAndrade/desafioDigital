@@ -39,13 +39,13 @@ public class SessaoService {
         return sessaoRepository.save(sessao);
     }
 
-    public void checkSessaoAberta(Long idPauta) {
-        if (!isSessaoAberta(idPauta)) {
+    public void checkSessaoAbertaByIdPauta(Long idPauta) {
+        if (!isSessaoAbertaByIdPauta(idPauta)) {
             throw new BussinessException(String.format("Sessão para a pauta %s não está aberta.", idPauta));
         }
     }
 
-    private boolean isSessaoAberta(Long idPauta) {
+    private boolean isSessaoAbertaByIdPauta(Long idPauta) {
         Sessao sessao = findByIdPauta(idPauta);
         return sessao.getInicioSessao().plusMinutes(sessao.getTempoDuracaoSessao()).isAfter(LocalDateTime.now());
     }

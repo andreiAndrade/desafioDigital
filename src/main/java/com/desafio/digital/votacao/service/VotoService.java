@@ -46,9 +46,9 @@ public class VotoService {
     }
 
     private void checkVotoPermitido(Voto voto) {
-        sessaoService.checkSessaoAberta(voto.getIdPauta());
-        checkAssociadoHabilitado(voto.getCpfAssociado());
+        sessaoService.checkSessaoAbertaByIdPauta(voto.getIdPauta());
         checkVotoUnico(voto.getIdPauta(), voto.getCpfAssociado());
+        checkAssociadoHabilitado(voto.getCpfAssociado());
     }
 
     private void checkAssociadoHabilitado(String cpfAssociado) {
