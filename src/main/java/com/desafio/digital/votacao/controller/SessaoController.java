@@ -1,7 +1,9 @@
 package com.desafio.digital.votacao.controller;
 
-import com.desafio.digital.votacao.ApiVersion;
-import com.desafio.digital.votacao.domain.Sessao;
+import com.desafio.digital.votacao.config.ApiVersion;
+import com.desafio.digital.votacao.domain.in.SessaoIn;
+import com.desafio.digital.votacao.domain.out.SessaoOut;
+import com.desafio.digital.votacao.entity.Sessao;
 import com.desafio.digital.votacao.service.SessaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Api(value = "Serviço para Manipulação de Sessão", description = "Operações de Sessão")
+@Api(value = "Serviço para Manipulação de Sessão")
 @RestController
 @RequestMapping(value = "/sessao")
 public class SessaoController {
@@ -38,9 +40,9 @@ public class SessaoController {
             @ApiResponse(code = 500, message = "Erro interno")
     })
     @PostMapping(produces = ApiVersion.V1)
-    public ResponseEntity<Sessao> criarSessao(
-            @ApiParam(value = "Sessão que será salva no banco de dados", required = true) @Valid @RequestBody Sessao sessao) {
-        Sessao sessaoCriada = sessaoService.criarSessao(sessao);
+    public ResponseEntity<SessaoOut> criarSessao(
+            @ApiParam(value = "Sessão que será salva no banco de dados", required = true) @Valid @RequestBody SessaoIn sessaoIn) {
+        SessaoOut sessaoCriada = sessaoService.criarSessao(sessaoIn);
         return new ResponseEntity<>(sessaoCriada, HttpStatus.CREATED);
     }
 
@@ -52,10 +54,10 @@ public class SessaoController {
             @ApiResponse(code = 404, message = "Sessão não encontrada")
     })
     @PutMapping(produces = ApiVersion.V1)
-    public ResponseEntity<Sessao> finalizarSessao(
+    public ResponseEntity<SessaoOut> finalizarSessao(
             @ApiParam(value = "Id da sessão que será encerrada", required = true)
             @RequestParam(name = "sessao") Long idSessao) {
-        Sessao sessaoFinalizada = sessaoService.finalizarSessao(idSessao);
+        SessaoOut sessaoFinalizada = sessaoService.finalizarSessao(idSessao);
         return new ResponseEntity<>(sessaoFinalizada, HttpStatus.OK);
     }
 }

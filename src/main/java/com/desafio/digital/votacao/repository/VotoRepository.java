@@ -1,6 +1,6 @@
 package com.desafio.digital.votacao.repository;
 
-import com.desafio.digital.votacao.domain.Voto;
+import com.desafio.digital.votacao.entity.Voto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

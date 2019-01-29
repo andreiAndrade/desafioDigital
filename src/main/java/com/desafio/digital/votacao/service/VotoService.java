@@ -1,9 +1,13 @@
 package com.desafio.digital.votacao.service;
 
-import com.desafio.digital.votacao.domain.Voto;
+import com.desafio.digital.votacao.converter.VotoInToVotoConverter;
+import com.desafio.digital.votacao.converter.VotoToVotoOutConverter;
 import com.desafio.digital.votacao.domain.client.StatusEnum;
 import com.desafio.digital.votacao.domain.client.Users;
-import com.desafio.digital.votacao.domain.enums.VotoEnum;
+import com.desafio.digital.votacao.domain.in.VotoIn;
+import com.desafio.digital.votacao.domain.out.VotoOut;
+import com.desafio.digital.votacao.entity.Voto;
+import com.desafio.digital.votacao.entity.enums.VotoEnum;
 import com.desafio.digital.votacao.exception.BussinessException;
 import com.desafio.digital.votacao.repository.VotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +24,24 @@ public class VotoService {
 
     private final VotoRepository votoRepository;
     private final SessaoService sessaoService;
+    private final VotoInToVotoConverter votoInToVotoConverter;
+    private final VotoToVotoOutConverter votoToVotoOutConverter;
 
     @Autowired
-    public VotoService(VotoRepository votoRepository, @Lazy SessaoService sessaoService) {
+    public VotoService(VotoRepository votoRepository, @Lazy SessaoService sessaoService,
+            VotoInToVotoConverter votoInToVotoConverter, VotoToVotoOutConverter votoToVotoOutConverter) {
         this.votoRepository = votoRepository;
         this.sessaoService = sessaoService;
+        this.votoInToVotoConverter = votoInToVotoConverter;
+        this.votoToVotoOutConverter = votoToVotoOutConverter;
     }
 
-    public Voto votar(Voto voto) {
+    public VotoOut votar(VotoIn votoIn) {
+        Voto voto = votoInToVotoConverter.convert(votoIn);
         checkVotoPermitido(voto);
 
-        return votoRepository.save(voto);
+        Voto votoCriado = votoRepository.save(voto);
+        return votoToVotoOutConverter.convert(votoCriado);
     }
 
     public List<Voto> findByIdPauta(Long idPauta) {
@@ -38,11 +49,11 @@ public class VotoService {
     }
 
     public Long countVotosFavor(List<Voto> votoList) {
-        return votoList.stream().filter(voto -> VotoEnum.SIM.equals(voto.getVoto())).count();
+        return votoList.stream().filter(voto -> VotoEnum.SIM.equals(voto.getAceite())).count();
     }
 
     public Long countVotosContra(List<Voto> votoList) {
-        return votoList.stream().filter(voto -> VotoEnum.NAO.equals(voto.getVoto())).count();
+        return votoList.stream().filter(voto -> VotoEnum.NAO.equals(voto.getAceite())).count();
     }
 
     private void checkVotoPermitido(Voto voto) {

@@ -1,11 +1,10 @@
-package com.desafio.digital.votacao.domain;
+package com.desafio.digital.votacao.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Sessao {
@@ -15,7 +14,6 @@ public class Sessao {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull(message = "O id da pauta não pode ser null")
     @Column(name = "id_pauta", nullable = false)
     private Long idPauta;
 
@@ -33,11 +31,6 @@ public class Sessao {
 
     @Column(name = "votos_contra")
     private Long votosContra;
-
-    public Sessao() {
-        this.inicioSessao = LocalDateTime.now();
-        this.tempoDuracaoSessao = 1;
-    }
 
     public Long getId() {
         return id;

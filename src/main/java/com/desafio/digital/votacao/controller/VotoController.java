@@ -1,8 +1,9 @@
 package com.desafio.digital.votacao.controller;
 
-import com.desafio.digital.votacao.ApiVersion;
-import com.desafio.digital.votacao.domain.Sessao;
-import com.desafio.digital.votacao.domain.Voto;
+import com.desafio.digital.votacao.config.ApiVersion;
+import com.desafio.digital.votacao.domain.in.VotoIn;
+import com.desafio.digital.votacao.domain.out.VotoOut;
+import com.desafio.digital.votacao.entity.Sessao;
 import com.desafio.digital.votacao.service.VotoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Api(value = "Serviço para Manipulação de Voto", description = "Operações de Voto")
+@Api(value = "Serviço para Manipulação de Voto")
 @RestController
 @RequestMapping(value = "/voto")
 public class VotoController {
@@ -39,9 +40,9 @@ public class VotoController {
             @ApiResponse(code = 404, message = "Sessão não encontrada para o id da pauta informado")
     })
     @PostMapping(produces = ApiVersion.V1)
-    public ResponseEntity<Object> criarVoto(
-            @ApiParam(value = "Voto que será salvo no banco de dados", required = true) @Valid @RequestBody Voto voto) {
-        Voto votoCriado = votoService.votar(voto);
+    public ResponseEntity<VotoOut> criarVoto(
+            @ApiParam(value = "Voto que será salvo no banco de dados", required = true) @Valid @RequestBody VotoIn votoIn) {
+        VotoOut votoCriado = votoService.votar(votoIn);
         return new ResponseEntity<>(votoCriado, HttpStatus.CREATED);
     }
 }
